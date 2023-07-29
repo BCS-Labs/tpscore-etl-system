@@ -1,0 +1,16 @@
+[ 
+    ["Ajuna Network", "wss://rpc-parachain.ajuna.network"],
+    ["Aventus Network", "wss://public-rpc.mainnet.aventus.io"],
+    ["Bitgreen", "wss://mainnet.bitgreen.org"],
+    ["Collectives", "https://collectives.api.onfinality.io/rpc?apikey=28fd449f-ad7c-4ffb-baf5-391e1d16b92c"],
+    ["Frequency", "wss://frequency-rpc.dwellir.com"],
+    ["Hashed Network", "wss://c1.hashed.live"],
+    ["Kapex", "wss://k-ui.kapex.network"],
+    ["Kylin Network", "wss://polkadot.kylin-node.co.uk"],
+    ["Litentry", "wss://rpc.litentry-parachain.litentry.io"],
+    ["Manta Network", "wss://ws.manta.systems"],
+    ["OAK Network", "https://turing-rpc.dwellir.com"],
+    ["Pendalum", "wss://rpc-pendulum.prd.pendulumchain.tech:443"],
+    ["Subsocial", "wss://para.f3joule.space"],
+    ["t3rn", "wss://ws.t3rn.io"]
+]
