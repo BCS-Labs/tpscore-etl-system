@@ -9,7 +9,6 @@
     ["Kylin Network", "wss://polkadot.kylin-node.co.uk"],
     ["Litentry", "wss://rpc.litentry-parachain.litentry.io"],
     ["Manta Network", "wss://ws.manta.systems"],
-    ["OAK Network", "https://turing-rpc.dwellir.com"],
     ["Pendalum", "wss://rpc-pendulum.prd.pendulumchain.tech:443"],
     ["Subsocial", "wss://para.f3joule.space"],
     ["t3rn", "wss://ws.t3rn.io"]
