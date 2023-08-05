@@ -1,4 +1,7 @@
 **/.DS_Store
 /env
 .env
-test.ipynb
+eda_script.ipynb
+.coverage
+tests.py
+__pycache__

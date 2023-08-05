@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 import pymysql
 import substrateinterface
-from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+from airflow import DAG
 from dotenv import load_dotenv
 
 # Load environment variables from the .env file
