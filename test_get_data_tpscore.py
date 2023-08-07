@@ -32,9 +32,7 @@ def test_upload_data_success():
     with patch("get_data_tpscore.connect_to_db") as mock_connect_to_db:
         mock_connection = mock_connect_to_db.return_value
         cursor = mock_connection.cursor
-        context_manager = cursor.return_value
-        enter_context_manager = context_manager.__enter__.return_value
-        cursor_execute = enter_context_manager.execute
+        enter_context_manager = cursor.return_value.__enter__.return_value
 
         # Arrange
         processing_started_at = "2023-08-03 12:40:56"
@@ -76,9 +74,9 @@ def test_upload_data_success():
         
         mock_connect_to_db.assert_called_once()
         cursor.assert_called_once()
+        enter_context_manager.execute.assert_called_once_with(expected_sql_query, expected_params)
         mock_connection.commit.assert_called_once()
         mock_connection.close.assert_called_once()
-        cursor_execute.assert_called_once_with(expected_sql_query, expected_params)
 
 
 def test_type_of_processing_started_at():
