@@ -146,7 +146,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
     processing_started_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
     print(f"Starting to get data for {chain_name}")
-
+    
     # Create a SubstrateInterface object to interact with the parachain node
     ws_provider = substrateinterface.SubstrateInterface(url=endpoint)
 
@@ -156,7 +156,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
     # Calculate the block number of the first block (100 blocks range)
     block_finish = last_block["header"]["number"]
     block_start = block_finish - 99
-
+    
     # Extract the timestamps for the first and last blocks
     finish_block_timestamp_extrinsic = [
         extrinsic
@@ -206,7 +206,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
         datetime_start,
         datetime_finish,
         avg_n_txns_in_block,
-        tps,
+        tps
     )
     print(f"Finished getting data for {chain_name}")
 

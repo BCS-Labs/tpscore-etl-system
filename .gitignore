@@ -5,3 +5,4 @@ eda_script.ipynb
 .coverage
 tests.py
 __pycache__
+.coverage
