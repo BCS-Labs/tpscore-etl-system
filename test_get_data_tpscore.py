@@ -1,12 +1,15 @@
-from unittest.mock import patch, Mock, MagicMock
-import get_data_tpscore
-from pymysql import cursors
 from datetime import datetime
+from unittest.mock import patch
+
+from pymysql import cursors
+
+import get_data_tpscore
 
 # Example connection parameters for testing
 TEST_HOST = "localhost"
 TEST_USERNAME = "test_user"
 TEST_PASSWORD = "test_password"
+
 
 def test_connect_to_db():
     with patch("get_data_tpscore.connect") as mock_connect:
@@ -21,7 +24,11 @@ def test_connect_to_db():
         }
 
         # Act
-        get_data_tpscore.connect_to_db(expected_connection_params['host'], expected_connection_params['user'], expected_connection_params['password'])
+        get_data_tpscore.connect_to_db(
+            expected_connection_params["host"],
+            expected_connection_params["user"],
+            expected_connection_params["password"],
+        )
 
         # Assert
         mock_connect.assert_called_once_with(**expected_connection_params)
@@ -42,7 +49,7 @@ def test_upload_data():
         block_finish = 1100
         avg_n_txns_in_block = 10.5
         tps = 5.7
-        
+
         # Act
         get_data_tpscore.upload_data(
             processing_started_at,
@@ -52,13 +59,11 @@ def test_upload_data():
             block_start,
             block_finish,
             avg_n_txns_in_block,
-            tps
+            tps,
         )
-        
+
         # Assert
-        expected_sql_query = (
-            "INSERT INTO tps(processing_started_at, chain_name, datetime_start, datetime_finish, block_start, block_finish, avg_n_txns_in_block, tps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        )
+        expected_sql_query = "INSERT INTO tps(processing_started_at, chain_name, datetime_start, datetime_finish, block_start, block_finish, avg_n_txns_in_block, tps) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         expected_params = (
             processing_started_at,
             chain_name,
@@ -67,26 +72,26 @@ def test_upload_data():
             block_start,
             block_finish,
             avg_n_txns_in_block,
-            tps
+            tps,
         )
 
-        
         mock_connect_to_db.assert_called_once()
         cursor.assert_called_once()
-        enter_context_manager.execute.assert_called_once_with(expected_sql_query, expected_params)
+        enter_context_manager.execute.assert_called_once_with(
+            expected_sql_query, expected_params
+        )
         mock_connection.commit.assert_called_once()
         mock_connection.close.assert_called_once()
 
 
 def test_get_endpoint_chain_data():
-
     # Mock the connect_to_db function
     with patch("get_data_tpscore.upload_data") as mock_upload_data:
         with patch("substrateinterface.SubstrateInterface") as mock_substrateinterface:
             with patch("get_data_tpscore.datetime") as mock_datetime:
                 mock_datetime.utcnow.return_value = datetime(2023, 8, 3, 12, 40, 56)
                 ws_provider = mock_substrateinterface.return_value
-                
+
                 # Arrange
                 chain_name = "Test Chain"
                 endpoint = "wss://test.network.endpoint"
@@ -97,13 +102,26 @@ def test_get_endpoint_chain_data():
 
                 # Mock extrinsics with correct module names
                 mock_extrinsics = [
-                    GenericExtrinsic(value={"call": {"call_module": "Timestamp", 'call_args': [{'name': 'now', 'type': 'Moment', 'value': 1691393586001}]}}),
+                    GenericExtrinsic(
+                        value={
+                            "call": {
+                                "call_module": "Timestamp",
+                                "call_args": [
+                                    {
+                                        "name": "now",
+                                        "type": "Moment",
+                                        "value": 1691393586001,
+                                    }
+                                ],
+                            }
+                        }
+                    ),
                     GenericExtrinsic(value={"call": {"call_module": "Balances"}}),
                 ]
-                
+
                 ws_provider.get_block.return_value = {
                     "header": {"number": 1100},
-                    "extrinsics": mock_extrinsics
+                    "extrinsics": mock_extrinsics,
                 }
 
                 # Act
@@ -114,7 +132,3 @@ def test_get_endpoint_chain_data():
                 ws_provider.get_block.assert_called()
                 mock_datetime.utcfromtimestamp.assert_called()
                 mock_upload_data.assert_called_once()
-
-        
-
-

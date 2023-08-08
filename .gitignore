@@ -6,3 +6,4 @@ eda_script.ipynb
 tests.py
 __pycache__
 .coverage
+/coverage_re

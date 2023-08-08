@@ -1,63 +1,16 @@
 import json
 import os
 from datetime import datetime
-import substrateinterface
 
-from pymysql import connect, cursors
+import substrateinterface
 from dotenv import load_dotenv
+from pymysql import connect, cursors
 
 # Load environment variables from the .env file
 load_dotenv()
 HOST = os.getenv("HOST")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
-
-# List of parachain endpoints
-endpoint_parachains = [ 
-    ["Ajuna Network", "wss://rpc-parachain.ajuna.network"],
-    ["Aventus Network", "wss://public-rpc.mainnet.aventus.io"],
-    ["Bitgreen", "wss://mainnet.bitgreen.org"],
-    ["Collectives", "https://collectives.api.onfinality.io/rpc?apikey=28fd449f-ad7c-4ffb-baf5-391e1d16b92c"],
-    ["Frequency", "wss://frequency-rpc.dwellir.com"],
-    ["Hashed Network", "wss://c1.hashed.live"],
-    ["Kapex", "wss://k-ui.kapex.network"],
-    ["Kylin Network", "wss://polkadot.kylin-node.co.uk"],
-    ["Litentry", "wss://rpc.litentry-parachain.litentry.io"],
-    ["Manta Network", "wss://ws.manta.systems"],
-    ["OAK Network", "https://turing-rpc.dwellir.com"],
-    ["Pendalum", "wss://rpc-pendulum.prd.pendulumchain.tech:443"],
-    ["Subsocial", "wss://para.f3joule.space"],
-    ["t3rn", "wss://ws.t3rn.io"]
-]
-
-# List of subscan api endpoints
-subscan_parachains = [
-    ["Polkadot","polkadot"],
-    ["Darwinia", "darwinia"],
-    ["Acala", "acala"],
-    ["Aleph Zero", "alephzero"],
-    ["Astar", "astar"],
-    ["Bitfrost", "bifrost"],
-    ["Centrifuge", "centrifuge"],
-    ["Clover", "clv"],
-    ["Composable Finance", "composable"],
-    ["Crust", "crust"],
-    ["Efinity", "efinity"],
-    ["Equilibrium", "equilibrium"],
-    ["HydraDX", "hydradx"],
-    ["Integritee", "integritee"],
-    ["Interlay", "interlay"],
-    ["KILT", "spiritnet"],
-    ["Moonbeam", "moonbeam"],
-    ["Nodle","nodle"],
-    ["OriginTrail", "origintrail"],
-    ["Parallel Finance","parallel"],
-    ["Phala", "phala"],
-    ["Polkadex", "polkadex"],
-    ["Assethub Polkadot", "assethub-polkadot"],
-    ["Unique", "unique"],
-    ["Zeitgeist", "zeitgeist"]
-]
 
 
 # Function to connect to the database
@@ -69,7 +22,7 @@ def connect_to_db(HOST, USERNAME, PASSWORD):
         password=PASSWORD,
         db="tpscore_data",
         charset="utf8mb4",
-        cursorclass=cursors.DictCursor
+        cursorclass=cursors.DictCursor,
     )
     print(f"Successfully connected to db at the {HOST}")
     return connection
@@ -84,7 +37,7 @@ def upload_data(
     block_start,
     block_finish,
     avg_n_txns_in_block,
-    tps
+    tps,
 ):
     """
     Uploads TPS data to the database.
@@ -102,7 +55,7 @@ def upload_data(
     Returns:
         None
     """
-    
+
     connection = connect_to_db(HOST, USERNAME, PASSWORD)
 
     try:
@@ -119,8 +72,8 @@ def upload_data(
                     block_start,
                     block_finish,
                     avg_n_txns_in_block,
-                    tps
-                )
+                    tps,
+                ),
             )
 
         connection.commit()
@@ -146,7 +99,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
     processing_started_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
     print(f"Starting to get data for {chain_name}")
-    
+
     # Create a SubstrateInterface object to interact with the parachain node
     ws_provider = substrateinterface.SubstrateInterface(url=endpoint)
 
@@ -156,7 +109,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
     # Calculate the block number of the first block (100 blocks range)
     block_finish = last_block["header"]["number"]
     block_start = block_finish - 99
-    
+
     # Extract the timestamps for the first and last blocks
     finish_block_timestamp_extrinsic = [
         extrinsic
@@ -206,7 +159,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
         datetime_start,
         datetime_finish,
         avg_n_txns_in_block,
-        tps
+        tps,
     )
     print(f"Finished getting data for {chain_name}")
 
@@ -223,6 +176,11 @@ def get_endpoint_chain_data(chain_name, endpoint):
     )
 
 
+# Read chain names and endpoints from the JSON file
+with open("all_parachains_endpoints.json") as f:
+    endpoint_parachains = json.load(f)
+
+
 # Function to fetch data for all parachains
 def get_data():
     # Loop through each parachain and fetch data from an endpoint
@@ -234,5 +192,3 @@ def get_data():
 
 if __name__ == "__main__":
     get_data()
-
-

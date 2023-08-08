@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime, timedelta
 
-import pymysql
+from pymysql import connect, cursors
 import substrateinterface
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
@@ -13,7 +13,6 @@ load_dotenv()
 HOST = os.getenv("HOST")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
-SUBSCAN_KEY = os.getenv("SUBSCAN_KEY")
 
 default_args = {
     "owner": "active_developer",
@@ -30,6 +29,21 @@ dag = DAG(
 )
 
 
+# Function to connect to the database
+def connect_to_db(HOST, USERNAME, PASSWORD):
+    global connection
+    connection = connect(
+        host=HOST,
+        user=USERNAME,
+        password=PASSWORD,
+        db="tpscore_data",
+        charset="utf8mb4",
+        cursorclass=cursors.DictCursor,
+    )
+    print(f"Successfully connected to db at the {HOST}")
+    return connection
+
+
 # Function to upload data to the database
 def upload_data(
     processing_started_at,
@@ -39,7 +53,7 @@ def upload_data(
     block_start,
     block_finish,
     avg_n_txns_in_block,
-    tps
+    tps,
 ):
     """
     Uploads TPS data to the database.
@@ -57,20 +71,9 @@ def upload_data(
     Returns:
         None
     """
-    # Function to connect to the database
-    def connect_to_db():
-        global connection
-        connection = pymysql.connect(
-            host=HOST,
-            user=USERNAME,
-            password=PASSWORD,
-            db="tpscore_data",
-            charset="utf8mb4",
-            cursorclass=pymysql.cursors.DictCursor,
-        )
-        print("Successfully connected to db")
 
-    connect_to_db()
+    connection = connect_to_db(HOST, USERNAME, PASSWORD)
+
     try:
         with connection.cursor() as cursor:
             # SQL query to insert data into the database table 'tps'
@@ -185,7 +188,7 @@ def get_endpoint_chain_data(chain_name, endpoint):
         block_start,
         block_finish,
         avg_n_txns_in_block,
-        tps,
+        tps
     )
 
 
