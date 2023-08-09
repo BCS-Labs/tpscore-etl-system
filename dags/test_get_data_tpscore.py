@@ -12,6 +12,9 @@ TEST_PASSWORD = "test_password"
 
 
 def test_connect_to_db():
+    """
+    Test connecting to the database using mocked 'connect' function.
+    """
     with patch("get_data_tpscore.connect") as mock_connect:
         # Arrange
         expected_connection_params = {
@@ -35,6 +38,9 @@ def test_connect_to_db():
 
 
 def test_upload_data():
+    """
+    Test uploading data to the database using mocked database connection.
+    """
     with patch("get_data_tpscore.connect_to_db") as mock_connect_to_db:
         mock_connection = mock_connect_to_db.return_value
         cursor = mock_connection.cursor
@@ -85,7 +91,9 @@ def test_upload_data():
 
 
 def test_get_endpoint_chain_data():
-    # Mock the connect_to_db function
+    """
+    Test getting endpoint chain data and uploading it to the database.
+    """
     with patch("get_data_tpscore.upload_data") as mock_upload_data:
         with patch("substrateinterface.SubstrateInterface") as mock_substrateinterface:
             with patch("get_data_tpscore.datetime") as mock_datetime:
@@ -100,7 +108,6 @@ def test_get_endpoint_chain_data():
                     def __init__(self, value):
                         self.value = value
 
-                # Mock extrinsics with correct module names
                 mock_extrinsics = [
                     GenericExtrinsic(
                         value={
