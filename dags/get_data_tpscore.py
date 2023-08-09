@@ -1,33 +1,15 @@
-import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
-from pymysql import connect, cursors
 import substrateinterface
-from airflow.operators.python_operator import PythonOperator
-from airflow import DAG
 from dotenv import load_dotenv
+from pymysql import connect, cursors
 
 # Load environment variables from the .env file
 load_dotenv()
 HOST = os.getenv("HOST")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
-
-default_args = {
-    "owner": "active_developer",
-    "retries": 5,
-    "retry_delay": timedelta(minutes=1),
-}
-
-dag = DAG(
-    dag_id="get_data_tpscore_v3",
-    default_args=default_args,
-    start_date=datetime(2023, 7, 30, 9, 50),
-    schedule_interval="*/10 * * * *",
-    catchup=False,
-)
-
 
 # Function to connect to the database
 def connect_to_db(HOST, USERNAME, PASSWORD):
@@ -188,21 +170,5 @@ def get_endpoint_chain_data(chain_name, endpoint):
         block_start,
         block_finish,
         avg_n_txns_in_block,
-        tps
-    )
-
-
-# Read chain names from the JSON file
-with open("/opt/airflow/dags/all_parachains_endpoints.json") as f:
-    chains = json.load(f)
-
-
-# Create tasks for each chain and add them to the DAG
-for id, chain in enumerate(chains):
-    task_id = f"get_data_{id}"
-    task = PythonOperator(
-        task_id=task_id,
-        python_callable=get_endpoint_chain_data,
-        op_kwargs={"chain_name": chain[0], "endpoint": chain[1]},
-        dag=dag,
+        tps,
     )

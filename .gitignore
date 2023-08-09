@@ -7,3 +7,5 @@ tests.py
 __pycache__
 .coverage
 /coverage_re
+.pytest_cache
+/dags/.env
