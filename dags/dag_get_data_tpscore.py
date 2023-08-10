@@ -14,12 +14,14 @@ HOST = os.getenv("HOST")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
+# Default arguments for the DAG
 default_args = {
     "owner": "active_developer",
     "retries": 5,
     "retry_delay": timedelta(minutes=1),
 }
 
+# Define the DAG
 dag = DAG(
     dag_id="get_data_tpscore_v5",
     default_args=default_args,
