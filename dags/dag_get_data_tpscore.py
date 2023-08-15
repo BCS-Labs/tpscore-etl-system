@@ -4,15 +4,9 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from dotenv import load_dotenv
 
 from get_data_tpscore import get_endpoint_chain_data
 
-# Load environment variables from the .env file
-load_dotenv()
-HOST = os.getenv("HOST")
-USERNAME = os.getenv("USERNAME")
-PASSWORD = os.getenv("PASSWORD")
 
 # Default arguments for the DAG
 default_args = {
