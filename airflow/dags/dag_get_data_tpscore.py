@@ -17,7 +17,7 @@ default_args = {
 
 # Define the DAG
 dag = DAG(
-    dag_id="get_data_tpscore_v5",
+    dag_id="get_data_tpscore",
     default_args=default_args,
     start_date=datetime(2023, 7, 30, 9, 50),
     schedule_interval="*/10 * * * *",

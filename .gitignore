@@ -1,11 +1,11 @@
 **/.DS_Store
-/env
-.env
-eda_script.ipynb
 .coverage
-tests.py
 __pycache__
 .coverage
 /coverage_re
 .pytest_cache
-/dags/.env
+/airflow/config/
+/airflow/logs/*
+/airflow/plugins/*
+!/airflow/logs/.gitkeep
+!/airflow/plugins/.gitkeep
