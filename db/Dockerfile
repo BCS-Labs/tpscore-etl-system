@@ -6,4 +6,3 @@ ENV MYSQL_USER=user_tpscore \
     MYSQL_ROOT_PASSWORD=root 
     
 COPY db_schema.sql /docker-entrypoint-initdb.d
-EXPOSE 3306/tcp

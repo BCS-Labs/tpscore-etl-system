@@ -3,14 +3,13 @@
 Create db container:
 1. cd db
 2. docker build -t mysql_tpscore .
-3. docker run -p 3305:3306/tcp --name db_mysql -d mysql_tpscore
+3. docker run --name db_mysql -d mysql_tpscore
 
 Create airflow container:
-1. cd ..
-2. cd airflow
-3. docker compose up airflow-init
-4. docker build .
-5. docker compose up -d
+1. cd airflow
+2. docker compose up airflow-init
+3. docker build .
+4. docker compose up -d
 
 Create a network and connect containers:
 1. docker network create net_tpscore
