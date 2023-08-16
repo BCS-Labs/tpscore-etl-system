@@ -20,3 +20,10 @@ Go to Airflow UI:
 1. Go to http://localhost:8080/ 
 2. Login with (airflow, airflow)
 3. Click run get_data_tpscore DAG
+
+
+How to run tests?
+1. python -m venv venv_tpscore
+2. source venv_tpscore/bin/activate
+3. pip install -r requirements.txt
+4. pytest

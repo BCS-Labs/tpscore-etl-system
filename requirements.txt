@@ -1,0 +1,4 @@
+pymysql
+pytest
+python-dotenv
+substrate-interface
