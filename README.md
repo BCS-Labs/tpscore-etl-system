@@ -14,9 +14,7 @@ Create airflow container:
 Create a network and connect containers:
 1. docker network create net_tpscore
 2. docker network connect net_tpscore db_mysql
-3. docker network connect net_tpscore <airflow_scheduler_container_id>
-
-Note, you can find <airflow_scheduler_container_id> by running docker ps command.
+3. docker network connect net_tpscore airflow-scheduler
 
 Go to Airflow UI:
 1. Go to http://localhost:8080/ 
