@@ -84,7 +84,7 @@ def upload_data(
 # Function to get data from an endpoint for a specific parachain
 def get_endpoint_chain_data(chain_name, endpoint):
     """
-    Fetches TPS data from an endpoint for a specific parachain.
+    Fetches TPS data from an endpoint for a specific chain.
 
     Parameters:
         chain_name (str): Name of the parachain or chain.
