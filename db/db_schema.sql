@@ -46,7 +46,6 @@ INSERT INTO chain_info VALUES("Litentry", 12);
 INSERT INTO chain_info VALUES("Manta Network", 12);
 INSERT INTO chain_info VALUES("Moonbeam", 12);
 INSERT INTO chain_info VALUES("Nodle", 12);
-INSERT INTO chain_info VALUES("OAK Network", 12);
 INSERT INTO chain_info VALUES("OriginTrail", 12);
 INSERT INTO chain_info VALUES("Parallel Finance", 12);
 INSERT INTO chain_info VALUES("Pendalum", 12);
