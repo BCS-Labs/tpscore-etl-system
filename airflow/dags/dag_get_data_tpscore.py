@@ -1,12 +1,10 @@
 import json
-import os
 from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
 from get_data_tpscore import get_endpoint_chain_data
-
 
 # Default arguments for the DAG
 default_args = {
